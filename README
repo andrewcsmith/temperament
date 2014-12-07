@@ -1,0 +1,13 @@
+Python library for analyzing musical temperaments. Created by Andrew C. Smith
+(http://www.andrewchristophersmith.com) for musical research.
+
+Requirements:
+
+	* numpy
+	* matplotlib (for plotting)
+	* nose (for testing)
+
+In addition to some basic analytical functions, temperament includes a very
+small catalog of historical and new temperaments. I hope to expand this.
+
+This library is subject to change at any moment based on whimsy.
