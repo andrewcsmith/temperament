@@ -5,9 +5,27 @@ from future.moves.itertools import filterfalse
 def hz_to_cents(hz):
     return np.log2(hz) * 1200.0
 
-# Ideal intervals for tuning
-JUST_MAJOR_TRIAD = hz_to_cents(np.array([5./4., 3./2., 6./5.]))
-JUST_MINOR_TRIAD = hz_to_cents(np.array([6./5., 3./2., 5./4.]))
+# Ideal intervals and triads
+JUST_MAJOR_THIRD = hz_to_cents(np.array([5./4.]))
+JUST_MINOR_THIRD = hz_to_cents(np.array([6./5.]))
+JUST_PERFECT_FIFTH = hz_to_cents(np.array([3./2.]))
+JUST_MAJOR_TRIAD = np.array([JUST_MAJOR_THIRD, JUST_PERFECT_FIFTH, JUST_MINOR_THIRD]).ravel()
+JUST_MINOR_TRIAD = np.array([JUST_MINOR_THIRD, JUST_PERFECT_FIFTH, JUST_MAJOR_THIRD]).ravel()
+CHROMATIC_SEMITONE = np.array([76.0])
+DIATONIC_SEMITONE = np.array([117.1])
+
+# Ideal diatonic scale constructions
+MAJOR_IDEALS = np.array([JUST_MAJOR_TRIAD, JUST_MINOR_TRIAD, JUST_MINOR_TRIAD, JUST_MAJOR_TRIAD, JUST_MAJOR_TRIAD, JUST_MINOR_TRIAD])
+MAJOR_DEGREES = np.array([[0, 4, 7], [2, 5, 9], [4, 7, 11], [5, 9, 12], [7, 11, 14], [9, 12, 16]])
+
+SEMITONE_DEGREES = np.array([[0, 1], [2, 3], [4, 5], [5, 6], [7, 8], [9, 10], [11, 12]])
+MEANTONE_SEMITONES = np.array([CHROMATIC_SEMITONE, DIATONIC_SEMITONE, DIATONIC_SEMITONE, CHROMATIC_SEMITONE, CHROMATIC_SEMITONE, DIATONIC_SEMITONE, DIATONIC_SEMITONE])
+
+TONIC_THIRD_DEGREES = np.array([[0, 4]])
+TONIC_THIRD_IDEAL = np.array([JUST_MINOR_THIRD])
+
+TONIC_FIFTH_DEGREES = np.array([[0, 7]])
+TONIC_FIFTH_IDEAL = np.array([JUST_PERFECT_FIFTH])
 
 # Some temperaments under consideration
 EQUAL_TEMPERAMENT = np.array([0., 100., 200., 300., 400., 500., 600., 700., 800., 900., 1000., 1100.])

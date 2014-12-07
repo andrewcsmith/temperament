@@ -22,3 +22,6 @@ def test_combinatorial_difference():
     expected = [110., 210., 100.]
     assert_list_equal(expected, list(combinatorial_difference(input)))
 
+def test_major_key_tempering_error():
+    assert_equal(31.283, round(key_tempering(EQUAL_TEMPERAMENT, MAJOR_DEGREES, MAJOR_IDEALS), 3))
+
