@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
-import itertools
+from itertools import combinations_with_replacement
+from future.moves.itertools import filterfalse
 
 JUST_MAJOR_TRIAD = np.array([5./4., 3./2., 6./5.])
 JUST_MINOR_TRIAD = np.array([6./5., 3./2., 5./4.])
@@ -13,9 +14,9 @@ def mean_tempering(actual, ideal = hz_to_cents(JUST_MAJOR_TRIAD)):
     return sum(abs(actual - ideal))
 
 def combinatorial_difference(input):
-    combos = itertools.combinations_with_replacement(input, 2)
+    combos = combinations_with_replacement(input, 2)
     diffs = map(lambda x: abs(x[0] - x[1]), combos)
-    return list(itertools.filterfalse(lambda x: x == 0, diffs))
+    return list(filterfalse(lambda x: x == 0, diffs))
 
 def key_tempering(tuning, intervals, ideals):
     def correct_octaves(interval):
