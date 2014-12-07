@@ -2,14 +2,22 @@ import numpy as np
 from itertools import combinations_with_replacement
 from future.moves.itertools import filterfalse
 
-JUST_MAJOR_TRIAD = np.array([5./4., 3./2., 6./5.])
-JUST_MINOR_TRIAD = np.array([6./5., 3./2., 5./4.])
-EQUAL_TEMPERAMENT = np.array([0., 100., 200., 300., 400., 500., 600., 700., 800., 900., 1000., 1100.])
-
 def hz_to_cents(hz):
     return np.log2(hz) * 1200.0
 
-def mean_tempering(actual, ideal = hz_to_cents(JUST_MAJOR_TRIAD)):
+# Ideal intervals for tuning
+JUST_MAJOR_TRIAD = hz_to_cents(np.array([5./4., 3./2., 6./5.]))
+JUST_MINOR_TRIAD = hz_to_cents(np.array([6./5., 3./2., 5./4.]))
+
+# Some temperaments under consideration
+EQUAL_TEMPERAMENT = np.array([0., 100., 200., 300., 400., 500., 600., 700., 800., 900., 1000., 1100.])
+WERCK_III = np.array([0.0, 90.226, 192.180, 294.135, 390.225, 498.045, 588.045, 696.090, 792.181, 888.270, 996.090, 1092.180])
+WERCK_IV = np.array([0.0, 82.406, 196.090, 294.135, 392.180, 498.045, 588.270, 694.135, 784.361, 890.225, 1003.910, 1086.315])
+ACS_I = np.array([0.0, 90.1, 190.5, 282.3, 386.0, 498.5, 586.1, 698.2, 777.9, 883.6, 992.3, 1083.7])
+ACS_II = np.array([0.0, 84.8, 192.8, 295.9, 386.7, 504.1, 588.9, 695.9, 790.7, 888.7, 1001.9, 1087.9])
+MEANTONE = np.array([0.0, 76, 193, 310, 386, 503, 579, 697, 773, 890, 1007, 1083])
+
+def mean_tempering(actual, ideal = JUST_MAJOR_TRIAD):
     return sum(abs(actual - ideal))
 
 def combinatorial_difference(input):

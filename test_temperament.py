@@ -13,7 +13,7 @@ def test_hz_to_cents():
 
 def test_key_tempering_error():
     intervals = np.array([[0, 4, 7], [2, 5, 9]])
-    ideals = np.array([hz_to_cents(JUST_MAJOR_TRIAD), hz_to_cents(JUST_MINOR_TRIAD)])
+    ideals = np.array([JUST_MAJOR_TRIAD, JUST_MINOR_TRIAD])
     tempering = key_tempering(EQUAL_TEMPERAMENT, intervals, ideals)
     assert_equal(31.283, round(tempering, 3))
 
