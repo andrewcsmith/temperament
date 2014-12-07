@@ -27,8 +27,6 @@ def key_tempering(tuning, intervals, ideals):
     def get_diffs(pair):
         triad = np.array(combinatorial_difference(map(correct_octaves, pair[0])))
         ideal = np.array(pair[1])
-        print(triad)
-        print(ideal)
         return mean_tempering(triad, ideal)
     return sum(map(get_diffs, zip(intervals, ideals))) / intervals.shape[0]
 
