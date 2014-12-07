@@ -37,9 +37,13 @@ ACS_I = np.array([0.0, 90.1, 190.5, 282.3, 386.0, 498.5, 586.1, 698.2, 777.9, 88
 ACS_II = np.array([0.0, 84.8, 192.8, 295.9, 386.7, 504.1, 588.9, 695.9, 790.7, 888.7, 1001.9, 1087.9])
 MEANTONE = np.array([0.0, 76, 193, 310, 386, 503, 579, 697, 773, 890, 1007, 1083])
 
-def mean_tempering(actual, ideal = JUST_MAJOR_TRIAD):
+def mean_tempering(actual, ideal = JUST_MAJOR_TRIAD, **kwargs):
     '''Gets the mean tempering of a given collection of intervals.'''
-    return sum(abs(actual - ideal))
+    if 'weights' in kwargs:
+        weights = kwargs['weights']
+    else: 
+        weights = np.ones(ideal.shape)
+    return sum(abs(actual - ideal) * weights)
 
 def combinatorial_difference(input):
     '''Gets the sequence of differences. This corresponds to the upper
@@ -48,7 +52,7 @@ def combinatorial_difference(input):
     diffs = map(lambda x: abs(x[0] - x[1]), combos)
     return list(filterfalse(lambda x: x == 0, diffs))
 
-def key_tempering(tuning, intervals, ideals):
+def key_tempering(tuning, intervals, ideals, **kwargs):
     '''Gets the mean tempering of an entire key.'''
     def correct_octaves(interval):
         addition = 0.0
@@ -59,6 +63,6 @@ def key_tempering(tuning, intervals, ideals):
     def get_diffs(pair):
         triad = np.array(combinatorial_difference(map(correct_octaves, pair[0])))
         ideal = np.array(pair[1])
-        return mean_tempering(triad, ideal)
+        return mean_tempering(triad, ideal, **kwargs)
     return sum(map(get_diffs, zip(intervals, ideals))) / intervals.shape[0]
 

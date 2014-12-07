@@ -22,3 +22,13 @@ def test_combinatorial_difference():
 def test_major_key_tempering_error():
     assert_equal(31.283, round(key_tempering(EQUAL_TEMPERAMENT, MAJOR_DEGREES, MAJOR_IDEALS), 3))
 
+def test_mean_tempering_weights():
+    input = np.array([400.0, 700.0, 300.0])
+    weights = np.array([1., 1., 0.])
+    assert_equal(15.641, round(mean_tempering(input, JUST_MAJOR_TRIAD, weights=weights), 3))
+
+def test_interval_weights():
+    weights = np.array([1., 1., 0.])
+    assert_equal(16.619, round(key_tempering(EQUAL_TEMPERAMENT, MAJOR_DEGREES,
+        MAJOR_IDEALS, weights=weights), 3))
+
