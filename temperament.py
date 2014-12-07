@@ -2,13 +2,14 @@ import numpy as np
 from itertools import combinations_with_replacement
 from future.moves.itertools import filterfalse
 
-def hz_to_cents(hz):
+def ratio_to_cents(hz):
+    '''Converts to cents.'''
     return np.log2(hz) * 1200.0
 
 # Ideal intervals and triads
-JUST_MAJOR_THIRD = hz_to_cents(np.array([5./4.]))
-JUST_MINOR_THIRD = hz_to_cents(np.array([6./5.]))
-JUST_PERFECT_FIFTH = hz_to_cents(np.array([3./2.]))
+JUST_MAJOR_THIRD = ratio_to_cents(np.array([5./4.]))
+JUST_MINOR_THIRD = ratio_to_cents(np.array([6./5.]))
+JUST_PERFECT_FIFTH = ratio_to_cents(np.array([3./2.]))
 JUST_MAJOR_TRIAD = np.array([JUST_MAJOR_THIRD, JUST_PERFECT_FIFTH, JUST_MINOR_THIRD]).ravel()
 JUST_MINOR_TRIAD = np.array([JUST_MINOR_THIRD, JUST_PERFECT_FIFTH, JUST_MAJOR_THIRD]).ravel()
 CHROMATIC_SEMITONE = np.array([76.0])
@@ -18,12 +19,13 @@ DIATONIC_SEMITONE = np.array([117.1])
 MAJOR_IDEALS = np.array([JUST_MAJOR_TRIAD, JUST_MINOR_TRIAD, JUST_MINOR_TRIAD, JUST_MAJOR_TRIAD, JUST_MAJOR_TRIAD, JUST_MINOR_TRIAD])
 MAJOR_DEGREES = np.array([[0, 4, 7], [2, 5, 9], [4, 7, 11], [5, 9, 12], [7, 11, 14], [9, 12, 16]])
 
+# Ideal meantone constructions of major and minor semitones
 SEMITONE_DEGREES = np.array([[0, 1], [2, 3], [4, 5], [5, 6], [7, 8], [9, 10], [11, 12]])
 MEANTONE_SEMITONES = np.array([CHROMATIC_SEMITONE, DIATONIC_SEMITONE, DIATONIC_SEMITONE, CHROMATIC_SEMITONE, CHROMATIC_SEMITONE, DIATONIC_SEMITONE, DIATONIC_SEMITONE])
 
+# Ideal tonics
 TONIC_THIRD_DEGREES = np.array([[0, 4]])
 TONIC_THIRD_IDEAL = np.array([JUST_MINOR_THIRD])
-
 TONIC_FIFTH_DEGREES = np.array([[0, 7]])
 TONIC_FIFTH_IDEAL = np.array([JUST_PERFECT_FIFTH])
 
@@ -36,14 +38,18 @@ ACS_II = np.array([0.0, 84.8, 192.8, 295.9, 386.7, 504.1, 588.9, 695.9, 790.7, 8
 MEANTONE = np.array([0.0, 76, 193, 310, 386, 503, 579, 697, 773, 890, 1007, 1083])
 
 def mean_tempering(actual, ideal = JUST_MAJOR_TRIAD):
+    '''Gets the mean tempering of a given collection of intervals.'''
     return sum(abs(actual - ideal))
 
 def combinatorial_difference(input):
+    '''Gets the sequence of differences. This corresponds to the upper
+    triangular portion of a difference matrix.'''
     combos = combinations_with_replacement(input, 2)
     diffs = map(lambda x: abs(x[0] - x[1]), combos)
     return list(filterfalse(lambda x: x == 0, diffs))
 
 def key_tempering(tuning, intervals, ideals):
+    '''Gets the mean tempering of an entire key.'''
     def correct_octaves(interval):
         addition = 0.0
         while(interval >= tuning.size):
