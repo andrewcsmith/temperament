@@ -1,4 +1,3 @@
-import matplotlib.pyplot as plt
 import numpy as np
 from itertools import combinations_with_replacement
 from future.moves.itertools import filterfalse
