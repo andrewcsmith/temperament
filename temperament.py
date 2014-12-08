@@ -24,9 +24,9 @@ SEMITONE_DEGREES = np.array([[0, 1], [2, 3], [4, 5], [5, 6], [7, 8], [9, 10], [1
 MEANTONE_SEMITONES = np.array([CHROMATIC_SEMITONE, DIATONIC_SEMITONE, DIATONIC_SEMITONE, CHROMATIC_SEMITONE, CHROMATIC_SEMITONE, DIATONIC_SEMITONE, DIATONIC_SEMITONE])
 
 # Ideal tonics
-TONIC_THIRD_DEGREES = np.array([[0, 4]])
+TONIC_THIRD_DEGREES = np.array([0, 4])
 TONIC_THIRD_IDEAL = np.array([JUST_MINOR_THIRD])
-TONIC_FIFTH_DEGREES = np.array([[0, 7]])
+TONIC_FIFTH_DEGREES = np.array([0, 7])
 TONIC_FIFTH_IDEAL = np.array([JUST_PERFECT_FIFTH])
 
 # Some temperaments under consideration
@@ -36,6 +36,15 @@ WERCK_IV = np.array([0.0, 82.406, 196.090, 294.135, 392.180, 498.045, 588.270, 6
 ACS_I = np.array([0.0, 90.1, 190.5, 282.3, 386.0, 498.5, 586.1, 698.2, 777.9, 883.6, 992.3, 1083.7])
 ACS_II = np.array([0.0, 84.8, 192.8, 295.9, 386.7, 504.1, 588.9, 695.9, 790.7, 888.7, 1001.9, 1087.9])
 MEANTONE = np.array([0.0, 76, 193, 310, 386, 503, 579, 697, 773, 890, 1007, 1083])
+
+def correct_octaves_for(tuning):
+    def correct_octaves(interval):
+        addition = 0.0
+        while(interval >= tuning.size):
+            addition += 1200.0
+            interval -= tuning.size
+        return tuning[interval] + addition
+    return np.vectorize(correct_octaves)
 
 def mean_tempering(actual, ideal = JUST_MAJOR_TRIAD, **kwargs):
     '''Gets the mean tempering of a given collection of intervals.'''
@@ -54,15 +63,10 @@ def combinatorial_difference(input):
 
 def key_tempering(tuning, intervals, ideals, **kwargs):
     '''Gets the mean tempering of an entire key.'''
-    def correct_octaves(interval):
-        addition = 0.0
-        while(interval >= tuning.size):
-            addition += 1200.0
-            interval -= tuning.size
-        return tuning[interval] + addition
     def get_diffs(pair):
-        triad = np.array(combinatorial_difference(map(correct_octaves, pair[0])))
+        func = correct_octaves_for(tuning)
+        triad = np.array(combinatorial_difference(func(pair[0])))
         ideal = np.array(pair[1])
         return mean_tempering(triad, ideal, **kwargs)
-    return sum(map(get_diffs, zip(intervals, ideals))) / intervals.shape[0]
+    return sum(map(get_diffs, zip(intervals, ideals))) / float(intervals.shape[0])
 

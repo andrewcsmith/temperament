@@ -2,11 +2,11 @@ from temperament import *
 from nose.tools import *
 
 def test_triad_mean_tempering():
-   input = np.array([400.0, 700.0, 300.0])
-   assert_equal(31.283, round(mean_tempering(input), 3))
+    input = np.array([400.0, 700.0, 300.0])
+    assert_equal(31.283, round(mean_tempering(input), 3))
 
 def test_ratio_to_cents():
-   assert_equal(386.3137, round(ratio_to_cents(5./4.), 4))
+    assert_equal(386.3137, round(ratio_to_cents(5./4.), 4))
 
 def test_key_tempering_error():
     intervals = np.array([[0, 4, 7], [2, 5, 9]])
