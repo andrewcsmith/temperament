@@ -37,6 +37,10 @@ ACS_I = np.array([0.0, 90.1, 190.5, 282.3, 386.0, 498.5, 586.1, 698.2, 777.9, 88
 ACS_II = np.array([0.0, 84.8, 192.8, 295.9, 386.7, 504.1, 588.9, 695.9, 790.7, 888.7, 1001.9, 1087.9])
 MEANTONE = np.array([0.0, 76, 193, 310, 386, 503, 579, 697, 773, 890, 1007, 1083])
 
+# Some things about fifths
+circle_of_fifths = ['C', 'G', 'D', 'A', 'E', 'B', 'F#/Gb', 'C#/Db', 'G#/Eb', 'D#/Eb', 'A#/Bb', 'F']
+order = [0, 7, 2, 9, 4, 11, 6, 1, 8, 3, 10, 5]
+
 def correct_octaves_for(tuning):
     def correct_octaves(interval):
         addition = 0.0
@@ -69,4 +73,33 @@ def key_tempering(tuning, intervals, ideals, **kwargs):
         ideal = np.array(pair[1])
         return mean_tempering(triad, ideal, **kwargs)
     return sum(map(get_diffs, zip(intervals, ideals))) / float(intervals.shape[0])
+
+# Higher-order functions that return vectorizers to feed through arrays
+
+def key_tempering_for(tuning):
+    return np.vectorize(lambda i: key_tempering(tuning, MAJOR_DEGREES + order[i], MAJOR_IDEALS))
+
+def weighted_key_tempering_for(tuning, weights):
+    return np.vectorize(lambda i: key_tempering(tuning, MAJOR_DEGREES +
+        order[i], MAJOR_IDEALS, weights=weights))
+
+def tempering_for(degrees, ideal):
+    def interval_tempering_for(tuning):
+        correct_octaves = correct_octaves_for(tuning)
+        def interval_tempering(i):
+           deg = degrees + order[i]
+           act = combinatorial_difference(correct_octaves(deg))
+           return mean_tempering(act, ideal)
+        return np.vectorize(interval_tempering)
+    return interval_tempering_for
+
+def fifth_tempering_for(tuning):
+    return np.vectorize(tempering_for(TONIC_FIFTH_DEGREES, TONIC_FIFTH_IDEAL)(tuning))
+
+def third_tempering_for(tuning):
+    return np.vectorize(tempering_for(TONIC_THIRD_DEGREES, TONIC_THIRD_IDEAL)(tuning))
+
+def meantone_deviation_for(tuning):
+    return np.vectorize(lambda i: key_tempering(tuning, 
+        SEMITONE_DEGREES + order[i], MEANTONE_SEMITONES))
 

@@ -5,6 +5,9 @@ from temperament import *
 import numpy as np
 import matplotlib.pyplot as plt
 
+circle_of_fifths = ['C', 'G', 'D', 'A', 'E', 'B', 'F#/Gb', 'C#/Db', 'G#/Eb', 'D#/Eb', 'A#/Bb', 'F']
+order = [0, 7, 2, 9, 4, 11, 6, 1, 8, 3, 10, 5]
+
 x = np.arange(0, 12, 1)
 weights = np.array([0.5, 1.0, 0.5])
 weighted_fifth = lambda t: weighted_key_tempering_for(t, weights)
