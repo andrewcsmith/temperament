@@ -22,20 +22,20 @@ acs_i_third = third_tempering_for(ACS_I)(x)
 acs_ii_third = third_tempering_for(ACS_II)(x)
 
 plt.axis([0, 40, 0, 30])
-plt.plot(werck_iii_fifth.max(), werck_iii_third.std(), 'r-<',
-        werck_iv_fifth.max(), werck_iv_third.std(), 'g->', 
+plt.plot(werck_iii_fifth.max(), werck_iii_third.std(), 'r-o',
+        werck_iv_fifth.max(), werck_iv_third.std(), 'g-o', 
         meantone_fifth.max(), meantone_third.std(), 'b-o', 
-        et_fifth.max(), et_third.std(), 'k-x',
-        acs_i_fifth.max(), acs_i_third.std(), 'y-d', 
-        acs_ii_fifth.max(), acs_ii_third.std(), 'c-D')
+        et_fifth.max(), et_third.std(), 'k-o', 
+        acs_i_fifth.max(), acs_i_third.std(), 'y-o', 
+        acs_ii_fifth.max(), acs_ii_third.std(), 'c-o')
 
 # Set the axes markers
 plt.legend(['Werckmeister III', 'Werckmeister IV', 'Meantone', 'Equal Temperament', 'ACS I', 'ACS II'])
 
 # Labels
+plt.title('Figure 5: Worst fifth vs. variety of thirds')
 plt.xlabel('Worst tempering of fifth', fontsize=14, color='black')
 plt.ylabel('Standard deviation of error in thirds', fontsize=14, color='black')
 
 plt.show()
-# plt.savefig(__file__ + '.png')
 

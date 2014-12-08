@@ -19,16 +19,22 @@ et = meantone_deviation_for(EQUAL_TEMPERAMENT)(x)
 acs_i = meantone_deviation_for(ACS_I)(x)
 acs_ii = meantone_deviation_for(ACS_II)(x)
 
-plt.axis([0, 11, 0, 100])
-plt.plot(x, werck_iii, 'r-o', x, werck_iv, 'g-o', x, meantone, 'b-o', x, et, 'k-o', x, acs_i, 'y-o', x, acs_ii, 'c-o')
+plt.axis([0, 11, 0, 60])
+plt.plot(x, werck_iii, 'r-<', 
+        x, werck_iv, 'g->', 
+        x, meantone, 'b-o', 
+        x, et, 'k-x', 
+        x, acs_i, 'y-d', 
+        x, acs_ii, 'c-D')
 
 # Set the axes markers
 plt.xticks(x, circle_of_fifths)
 plt.legend(['Werckmeister III', 'Werckmeister IV', 'Meantone', 'Equal Temperament', 'ACS I', 'ACS II'])
 
 # Labels
-plt.xlabel('tonic of key', fontsize=14, color='black')
-plt.ylabel('mean tempering of key', fontsize=14, color='black')
+plt.title('Figure 3: Deviation from meantone semitone schema')
+plt.xlabel('Tonic of key', fontsize=14, color='black')
+plt.ylabel('Deviation from meantone semitone schema', fontsize=14, color='black')
 
 plt.show()
 

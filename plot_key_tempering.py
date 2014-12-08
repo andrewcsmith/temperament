@@ -29,15 +29,21 @@ acs_i = key_tempering_for(ACS_I)(x)
 acs_ii = key_tempering_for(ACS_II)(x)
 
 plt.axis([0, 11, 0, 100])
-plt.plot(x, werck_iii, 'r-o', x, werck_iv, 'g-o', x, meantone, 'b-o', x, et, 'k-o', x, acs_i, 'y-o', x, acs_ii, 'c-o')
+plt.plot(x, werck_iii, 'r-<', 
+        x, werck_iv, 'g->', 
+        x, meantone, 'b-o', 
+        x, et, 'k-x', 
+        x, acs_i, 'y-d', 
+        x, acs_ii, 'c-D')
 
 # Set the axes markers
 plt.xticks(x, circle_of_fifths)
 plt.legend(['Werckmeister III', 'Werckmeister IV', 'Meantone', 'Equal Temperament', 'ACS I', 'ACS II'])
 
 # Labels
-plt.xlabel('tonic of key', fontsize=14, color='black')
-plt.ylabel('mean tempering of key', fontsize=14, color='black')
+plt.title('Figure 1: Mean tempering of diatonic triads')
+plt.xlabel('Tonic of key', fontsize=14, color='black')
+plt.ylabel('Mean tempering of diatonic triads', fontsize=14, color='black')
 
 plt.show()
 
